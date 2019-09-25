@@ -131,13 +131,12 @@ curl -L -s https://install.direct/go.sh | bash
 rm -rf /etc/supervisor/conf.d/v2rayClient.conf
 touch /etc/supervisor/conf.d/v2rayClient.conf
 cat>>/etc/supervisor/conf.d/v2rayClient.conf<<EOF
-[program:v2ray.fun]
-command=/usr/local/V2ray.Fun/start.sh run
-stdout_logfile=/var/log/v2ray.fun
+[program:v2rayClient]
+command=gunicorn -b localhost:8000 -w 4 v2rayClient:app
+directory=$SHELL_FOLDER
+user=$USER
 autostart=true
 autorestart=true
-startsecs=5
-priority=1
 stopasgroup=true
 killasgroup=true
 EOF
