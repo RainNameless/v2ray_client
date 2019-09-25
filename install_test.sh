@@ -48,14 +48,15 @@ fi
 
 #安装依赖包
 #Ubuntu
-if [ ${OS} == Ubuntu ] || [ ${OS} == Debian || [ ${OS} == LinuxMint || [ ${OS} == elementaryOS [ ${OS} == Deepin ];then
+
+if [ ${OS} == Ubuntu ] || [ ${OS} == Debian ] || [ ${OS} == LinuxMint ] || [ ${OS} == elementaryOS ] || [ ${OS} == Deepin ];then
 	apt-get update -y
 	apt-get install git unzip supervisor curl python3 python3-pip -y
 	pip3 install -r requirements.txt
 	pip3 install gunicorn
 fi
 #Manjaro&&Arch_Linux
-if [ ${OS} == ManjaroLinux ] || [ ${OS} == Arch Linux ];then
+if [ ${OS} == ManjaroLinux ] || [ ${OS} == ArchLinux ];then
 	pacman -Sy
 	pacman -S --noconfirm git unzip supervisor curl python3 python3-pip
 	pip3 install -r requirements.txt
@@ -63,10 +64,11 @@ if [ ${OS} == ManjaroLinux ] || [ ${OS} == Arch Linux ];then
 fi
 #CentOS
 if [ ${OS} == CentOS ];then
-	yum update -y
-	yum install git unzip supervisor curl python3 python3-pip -y
+
+	yum install git unzip curl python3 python3-pip -y
 	pip3 install -r requirements.txt
 	pip3 install gunicorn
+	pip3 install supervisor
 fi
 #openSUSE
 if [ ${OS} == openSUSE ];then
@@ -141,7 +143,6 @@ killasgroup=true
 EOF
 
 #关闭supervisor
-unlink /run/supervisor.sock
 unlink /run/supervisor.sock
 
 supervisord -c /etc/supervisor/supervisord.conf
