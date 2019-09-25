@@ -19,18 +19,15 @@
 - **注意：root权限下运行，不然无法修改v2ray配置**
 - **注意：root权限下运行，不然无法修改v2ray配置**
 
-要求：python3环境，linux,git,virtualenv
 
-install_test.sh 为热心网友提供的安装脚本，也可以进行测试安装
+这边是个测试新安装脚本install_test.sh弄的分支。
 
-1. virtualenv -p python3 --no-site-packages venv
-2. source venv/bin/activate
-3. cd 到项目目录
-4. 运行 sudo ./install.sh
-5. 按照脚本操作后，将会部署到后台
-6. 部署完成后访问http://127.0.0.1:8000
 
-开机自启自行部署：https://github.com/Supervisor/initscripts
+
+1. 运行 sudo ./install_test.sh
+2. 按照脚本操作后，将会部署到后台
+3. 部署完成后访问http://127.0.0.1:8000
+
 
 ## 启动停止方法
 1. 启动： supervisorctl -c config/supervisord.conf start v2rayClient
