@@ -94,6 +94,7 @@ rm -rf /etc/supervisor
 mkdir -p /etc/supervisor
 mkdir -p /etc/supervisor/conf.d
 touch /etc/supervisor/supervisord.conf
+echo_supervisord_conf > /etc/supervisor/supervisord.conf
 cat>>/etc/supervisor/supervisord.conf<<EOF
 [include]
 files = /etc/supervisor/conf.d/*.conf
