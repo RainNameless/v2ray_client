@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 #coding=utf-8
-PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
-export PATH
 
 #检查root权限
 [ $(id -u) != "0" ] && { echo "${CFAILURE}Error: You must be root to run this script${CEND}"; exit 1; }
