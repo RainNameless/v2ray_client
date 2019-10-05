@@ -108,7 +108,7 @@ chmod -R 777 /var/log/v2ray/access.log
 
 # 自定义端口号,账号,密码
 read -p "请输入默认用户名[直接回车默认admin]： " un
-read -p "请输入默认登录密码[直接回车默认admin]： " pw
+read -p "请输入默认登录密码[直接回车默认12345678]： " pw
 read -p "请输入监听端口号[直接回车默认8000]： " uport
 if [[ -z "${uport}" ]];then
     uport="8000"
