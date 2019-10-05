@@ -13,11 +13,11 @@
 ### 一键安装脚本，会自动安装环境，两个都一样的，下载方式不同而已.
 
 ```
-wget -c https://github.com/NoOne-hub/v2ray_client/archive/master.tar.gz && tar xzf master.tar.gz && cd v2ray_client-master && ./install_test.sh
+wget -c https://github.com/RainNameless/v2ray_client/archive/master.tar.gz && tar xzf master.tar.gz && cd v2ray_client-master && ./install_test.sh
 ```
 
 ```
-git clone https://github.com/NoOne-hub/v2ray_client.git && cd /v2ray_client && ./install_test.sh
+git clone https://github.com/RainNameless/v2ray_client.git && cd /v2ray_client && ./install_test.sh
 ```
 
 
