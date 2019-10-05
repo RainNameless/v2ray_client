@@ -16,28 +16,68 @@ function install_v2ray() {
     fi
 }
 
+function ReadMeFirst() {
+echo "请输入面板用户名(默认为NoOne-hub)"
+read user
+if [ -z "${user}" ];then
+ user="NoOne-hub"
+fi
 
-function install_components() {
-    #安装依赖
-    install_v2ray
-    pip3 install -r requirements.txt
-    git clone https://github.com/Supervisor/supervisor
-    cd supervisor && python setup.py install
-    cd ..
-    #部署后台运行环境,以及开机自启
-    echo_supervisord_conf > config/supervisord.conf
-    SHELL_FOLDER=$(cd "$(dirname "$0")";pwd)
-    echo "[program:v2rayClient]
-command=gunicorn -b localhost:8000 -w 4 v2rayClient:app
-directory=$SHELL_FOLDER
+echo "面板密码为(默认为1234567890):"
+read passwd
+if [ -z "${user}" ];then
+ user="1234567890"
+fi
+
+cat >> config.py << EOF
+    BASIC_AUTH_USERNAME = $user
+    BASIC_AUTH_PASSWORD = $passwd
+    BASIC_AUTH_FORCE = True
+EOF
+}
+
+function write_config() {
+cat >> config/supervisord.conf << EOF
+[program:v2rayClient]
+command=gunicorn -b 0.0.0.0:8000 -w 4 v2rayClient:app
+directory=$1
 user=$USER
 autostart=true
 autorestart=true
 stopasgroup=true
-killasgroup=true" >> config/supervisord.conf
+killasgroup=true
+EOF
+}
+
+function start_on_linux() {
+cat >> /etc/rc.local << EOF
+source $1/venv/bin/activate
+supervisord -c $1/config/supervisord.conf
+supervisorctl -c $1/config/supervisord.conf
+EOF
+chmod +x /etc/rc.local
+}
+
+function install_components() {
+    #切换到虚拟环境
+
+    #安装依赖
+    install_v2ray
+    pip3 install -r requirements.txt
+    #部署后台运行环境
+    echo_supervisord_conf > config/supervisord.conf
+    SHELL_FOLDER=$(cd "$(dirname "$0")";pwd)
+    sudo kill -9 $(ps -aux|grep supervisor| awk '{print$2}')
+    write_config $SHELL_FOLDER
     supervisord -c config/supervisord.conf
-    echo "接下来输入update,然后ctrl+d 退出"
+    echo "接下来ctrl+d 退出"
     supervisorctl -c config/supervisord.conf
+    if [ $? -ne 0 ]; then
+      echo "执行出错，请检查是否root运行"
+    #else
+      # 开机启动
+     # start_on_linux $SHELL_FOLDER
+    fi
 }
 
 
@@ -45,10 +85,8 @@ killasgroup=true" >> config/supervisord.conf
 
 function main()
 {
-
-    command -v git >/dev/null 2>&1 || { echo >&2 "I require git but it's not installed.  Aborting."; exit 1; }
-    command -v virtualenv >/dev/null 2>&1 || { echo >&2 "I require virtualenv but it's not installed.  Aborting."; exit 1; }
     begin=`get_now_timestamp`
+    ReadMeFirst
     install_components
     end=`get_now_timestamp`
     second=`expr ${end} - ${begin}`
